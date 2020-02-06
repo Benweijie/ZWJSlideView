@@ -15,6 +15,7 @@
 		527C0D8323EAC22800018E3B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 527C0D8223EAC22800018E3B /* main.m */; };
 		527C0D8E23EACB7300018E3B /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 527C0D8D23EACB7300018E3B /* MainViewController.m */; };
 		527C0D9123EAD14A00018E3B /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 527C0D9023EAD14A00018E3B /* SceneDelegate.m */; };
+		527C0D9723EBE89500018E3B /* ContainTableViewTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 527C0D9623EBE89500018E3B /* ContainTableViewTableViewCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,8 @@
 		527C0D8D23EACB7300018E3B /* MainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		527C0D8F23EAD14A00018E3B /* SceneDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneDelegate.h; sourceTree = "<group>"; };
 		527C0D9023EAD14A00018E3B /* SceneDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SceneDelegate.m; sourceTree = "<group>"; };
+		527C0D9523EBE89500018E3B /* ContainTableViewTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContainTableViewTableViewCell.h; sourceTree = "<group>"; };
+		527C0D9623EBE89500018E3B /* ContainTableViewTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ContainTableViewTableViewCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +80,8 @@
 				527C0D8223EAC22800018E3B /* main.m */,
 				527C0D8C23EACB7300018E3B /* MainViewController.h */,
 				527C0D8D23EACB7300018E3B /* MainViewController.m */,
+				527C0D9523EBE89500018E3B /* ContainTableViewTableViewCell.h */,
+				527C0D9623EBE89500018E3B /* ContainTableViewTableViewCell.m */,
 			);
 			path = TestTableviewContainTableVIew;
 			sourceTree = "<group>";
@@ -151,6 +156,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				527C0D9723EBE89500018E3B /* ContainTableViewTableViewCell.m in Sources */,
 				527C0D7823EAC22600018E3B /* ViewController.m in Sources */,
 				527C0D7223EAC22600018E3B /* AppDelegate.m in Sources */,
 				527C0D9123EAD14A00018E3B /* SceneDelegate.m in Sources */,

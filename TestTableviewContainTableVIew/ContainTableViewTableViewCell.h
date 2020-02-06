@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ContainTableViewTableViewCell : UITableViewCell
 
+- (void)setupCell:(NSInteger)index;
+
 @end
 
 NS_ASSUME_NONNULL_END

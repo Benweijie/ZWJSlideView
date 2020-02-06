@@ -7,10 +7,12 @@
 //
 
 #import "ViewController.h"
+#import "ContainTableViewTableViewCell.h"
 
 static NSString *const kNormalTabelViewCell = @"kNormalTabelViewCell";
+static NSString *const kContainTableViewCell = @"kContainTableViewCell";
 
-@interface ViewController ()<UITableViewDelegate, UITableViewDataSource>
+@interface ViewController ()<UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate>
 
 @property (nonatomic, strong) UITableView *mainTableView;
 @property (nonatomic, strong) NSMutableArray *testArr;
@@ -22,12 +24,10 @@ static NSString *const kNormalTabelViewCell = @"kNormalTabelViewCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.mainTableView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
-    
     [self.view addSubview:self.mainTableView];
     
     self.testArr = [NSMutableArray arrayWithCapacity:0];
-    for (NSInteger count = 0; count <= 20; count++) {
+    for (NSInteger count = 0; count < 20; count++) {
         [self.testArr addObject:@(count)];
     }
     
@@ -39,7 +39,7 @@ static NSString *const kNormalTabelViewCell = @"kNormalTabelViewCell";
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return self.mainTableView.frame.size.height - 44 - 20;
+    return self.mainTableView.frame.size.height;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -47,23 +47,46 @@ static NSString *const kNormalTabelViewCell = @"kNormalTabelViewCell";
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kNormalTabelViewCell];
-    
-    cell.textLabel.text = [NSString stringWithFormat:@"%ld", indexPath.row];
+    ContainTableViewTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kContainTableViewCell];
     
     return cell;
 }
 
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    ContainTableViewTableViewCell *containCell = (ContainTableViewTableViewCell *)cell;
+    [containCell setupCell:indexPath.row];
+    
+    if (indexPath.row >= self.testArr.count/2) {
+        NSInteger maxCount = self.testArr.count;
+        NSMutableArray<NSIndexPath *> *insertIndexPathCellArr = [NSMutableArray arrayWithCapacity:0];
+        for (NSInteger count = maxCount + 1; count <= maxCount + 10; count ++) {
+            [self.testArr addObject:@(count)];
+            NSIndexPath *insertIndexPathCell = [NSIndexPath indexPathForRow:count inSection:0];
+            [insertIndexPathCellArr addObject:insertIndexPathCell];
+        }
+
+//        [UIView performWithoutAnimation:^{
+//            [tableView beginUpdates];
+//            [tableView insertRowsAtIndexPaths:insertIndexPathCellArr.copy withRowAnimation:UITableViewRowAnimationNone];
+//            [tableView endUpdates];
+//        }];
+        [UIView performWithoutAnimation:^{
+            [tableView reloadData];
+        }];
+    }
+}
+
 - (UITableView *)mainTableView {
     if (!_mainTableView) {
-        _mainTableView = [[UITableView alloc] init];
+        _mainTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 64, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame) - 64) style:UITableViewStylePlain];
+        _mainTableView.automaticallyAdjustsScrollIndicatorInsets = NO;
         _mainTableView.delegate = self;
         _mainTableView.dataSource = self;
-//        _mainTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         [_mainTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kNormalTabelViewCell];
+        [_mainTableView registerClass:[ContainTableViewTableViewCell class] forCellReuseIdentifier:kContainTableViewCell];
+        _mainTableView.pagingEnabled = YES;
     }
     return _mainTableView;
 }
-
 
 @end
