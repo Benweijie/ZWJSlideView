@@ -34,7 +34,7 @@ static NSString *const kContainTableViewCell = @"kContainTableViewCell";
     [self.mainTableView reloadData];
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self.mainTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:3 inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
+        [self.mainTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:9 inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
     });
 }
 
@@ -52,28 +52,30 @@ static NSString *const kContainTableViewCell = @"kContainTableViewCell";
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-    ContainTableViewTableViewCell *containCell = (ContainTableViewTableViewCell *)cell;
-    [containCell setupCell:indexPath.row];
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    //模拟网络预加载数据新增上拉长度
+    CGFloat tableViewContentOffsetY = scrollView.contentOffset.y;
+    CGFloat cellHeight = self.mainTableView.frame.size.height;
     
-    if (indexPath.row >= self.testArr.count/2) {
+    NSInteger scrollIndex = tableViewContentOffsetY / cellHeight;
+    if (scrollIndex == self.testArr.count/2) {
         NSInteger maxCount = self.testArr.count;
         NSMutableArray<NSIndexPath *> *insertIndexPathCellArr = [NSMutableArray arrayWithCapacity:0];
-        for (NSInteger count = maxCount + 1; count <= maxCount + 10; count ++) {
+        for (NSInteger count = maxCount; count < maxCount + 10; count ++) {
             [self.testArr addObject:@(count)];
-            NSIndexPath *insertIndexPathCell = [NSIndexPath indexPathForRow:count inSection:0];
+            NSIndexPath *insertIndexPathCell = [NSIndexPath indexPathForRow:count-1 inSection:0];
             [insertIndexPathCellArr addObject:insertIndexPathCell];
         }
 
-//        [UIView performWithoutAnimation:^{
-//            [tableView beginUpdates];
-//            [tableView insertRowsAtIndexPaths:insertIndexPathCellArr.copy withRowAnimation:UITableViewRowAnimationNone];
-//            [tableView endUpdates];
-//        }];
         [UIView performWithoutAnimation:^{
-            [tableView reloadData];
+            [self.mainTableView insertRowsAtIndexPaths:insertIndexPathCellArr withRowAnimation:UITableViewRowAnimationNone];
         }];
     }
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    ContainTableViewTableViewCell *containCell = (ContainTableViewTableViewCell *)cell;
+    [containCell setupCell:indexPath.row];
 }
 
 - (UITableView *)mainTableView {
@@ -84,6 +86,9 @@ static NSString *const kContainTableViewCell = @"kContainTableViewCell";
         _mainTableView.dataSource = self;
         [_mainTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kNormalTabelViewCell];
         [_mainTableView registerClass:[ContainTableViewTableViewCell class] forCellReuseIdentifier:kContainTableViewCell];
+        _mainTableView.estimatedRowHeight = 0;
+        _mainTableView.estimatedSectionHeaderHeight = 0;
+        _mainTableView.estimatedSectionFooterHeight = 0;
         _mainTableView.pagingEnabled = YES;
     }
     return _mainTableView;
